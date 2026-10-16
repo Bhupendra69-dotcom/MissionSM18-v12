@@ -28,21 +28,12 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Install required Android SDK packages
+      - name: Verify Android SDK
         run: |
-          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_HOME" --licenses || true
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_HOME" --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
-
-      - name: Verify project files
-        working-directory: MissionSM18-Clean-Repo-v1.2
-        run: |
-          ls -la
-          test -f gradlew
-          test -f settings.gradle
-          test -d app
+          test -d "$ANDROID_HOME/platforms/android-35"
+          test -d "$ANDROID_HOME/build-tools/35.0.0"
 
       - name: Build APK
-        working-directory: MissionSM18-Clean-Repo-v1.2
         run: |
           chmod +x gradlew
           ./gradlew --no-daemon assembleDebug
@@ -50,7 +41,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Mission-SM18-v1.2-APK
-          path: MissionSM18-Clean-Repo-v1.2/app/build/outputs/apk/debug/app-debug.apk
+          name: Mission-SM18-DayNight-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
