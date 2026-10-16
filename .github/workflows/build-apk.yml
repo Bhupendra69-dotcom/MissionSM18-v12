@@ -14,10 +14,6 @@ jobs:
     name: Build Mission SM18 APK
     runs-on: ubuntu-latest
 
-    env:
-      ANDROID_HOME: /usr/local/lib/android/sdk
-      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,12 +24,15 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Install Android SDK
+      - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-        with:
-          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+
+      - name: Install Android SDK packages
+        run: |
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Build APK
+        working-directory: MissionSM18-Clean-Repo-v1.2
         run: |
           chmod +x gradlew
           ./gradlew --no-daemon assembleDebug
@@ -42,6 +41,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Mission-SM18-v1.2-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: MissionSM18-Clean-Repo-v1.2/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
