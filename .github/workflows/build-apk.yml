@@ -14,10 +14,6 @@ jobs:
     name: Build Mission SM18 APK
     runs-on: ubuntu-latest
 
-    env:
-      ANDROID_HOME: /usr/local/lib/android/sdk
-      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,20 +24,41 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Verify Android SDK
+      - name: Find project and build APK
+        shell: bash
         run: |
-          test -d "$ANDROID_HOME/platforms/android-35"
-          test -d "$ANDROID_HOME/build-tools/35.0.0"
+          set -e
 
-      - name: Build APK
-        run: |
+          echo "Searching for Gradle wrapper..."
+          WRAPPER="$(find . -type f -name gradlew -not -path '*/.gradle/*' -print -quit)"
+
+          if [ -z "$WRAPPER" ]; then
+            echo "ERROR: gradlew was not found in the repository."
+            find . -maxdepth 4 -type f | sort | head -200
+            exit 1
+          fi
+
+          PROJECT_DIR="$(dirname "$WRAPPER")"
+          echo "Project directory: $PROJECT_DIR"
+
+          cd "$PROJECT_DIR"
           chmod +x gradlew
           ./gradlew --no-daemon assembleDebug
+
+          APK="$PROJECT_DIR/app/build/outputs/apk/debug/app-debug.apk"
+
+          if [ ! -f "$APK" ]; then
+            echo "ERROR: APK was not generated at $APK"
+            exit 1
+          fi
+
+          mkdir -p "$GITHUB_WORKSPACE/out"
+          cp "$APK" "$GITHUB_WORKSPACE/out/app-debug.apk"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Mission-SM18-DayNight-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: out/app-debug.apk
           if-no-files-found: error
           retention-days: 14
