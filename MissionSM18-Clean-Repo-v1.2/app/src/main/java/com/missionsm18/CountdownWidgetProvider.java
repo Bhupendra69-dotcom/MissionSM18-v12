@@ -1,17 +1,24 @@
 package com.missionsm18;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.widget.RemoteViews;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class CountdownWidgetProvider extends AppWidgetProvider {
+    private static final int GREEN = 0xFF2E7D32;
+    private static final int YELLOW = 0xFFF9A825;
+    private static final int ORANGE = 0xFFEF6C00;
+    private static final int RED = 0xFFC62828;
+
     @Override public void onUpdate(Context context, AppWidgetManager manager, int[] ids) {
         updateWidgets(context, manager, ids);
         Intent service = new Intent(context, CountdownService.class);
@@ -22,34 +29,52 @@ public class CountdownWidgetProvider extends AppWidgetProvider {
     static void updateWidgets(Context context, AppWidgetManager manager, int[] ids) {
         Instant now = Instant.now();
         Countdown.Parts p = Countdown.parts(now);
-        int progress = (int) Math.round(Countdown.progress(now) * 1000);
-        int color = Countdown.color(now);
+        int mainProgress = (int) Math.round(Countdown.progress(now) * 1000.0);
+        int mainColor = Countdown.color(now);
         int period = backgroundPeriod(now);
         int background = backgroundFor(period);
         int textColor = period == 3 ? 0xFFFFFFFF : 0xFF000000;
-        int dayProgress = dailyRemainingProgress(now);
+        int dailyProgress = dailyRemainingProgress(now);
+        int dailyColor = progressColor(dailyProgress);
+        String today = now.atZone(Countdown.ZONE).format(DateTimeFormatter.ofPattern("EEEE, d MMM yyyy", Locale.ENGLISH));
+        String mainPercent = Math.round(mainProgress / 10.0) + "%";
+        String dailyPercent = Math.round(dailyProgress / 10.0) + "%";
 
         for (int id : ids) {
             RemoteViews v = new RemoteViews(context.getPackageName(), R.layout.countdown_widget);
             v.setTextViewText(R.id.widget_title, "Mission SM18");
+            v.setTextViewText(R.id.widget_today, today);
             v.setTextViewText(R.id.widget_date, p.finished ? "Mission complete" : p.dateLine());
             v.setTextViewText(R.id.widget_time, p.finished ? "Target date reached" : p.timeLine());
+            v.setTextViewText(R.id.widget_main_percent, mainPercent);
+            v.setTextViewText(R.id.widget_day_percent, dailyPercent);
             v.setTextColor(R.id.widget_title, textColor);
+            v.setTextColor(R.id.widget_today, textColor);
             v.setTextColor(R.id.widget_date, textColor);
             v.setTextColor(R.id.widget_time, textColor);
+            v.setTextColor(R.id.widget_main_percent, textColor);
+            v.setTextColor(R.id.widget_day_percent, textColor);
             v.setInt(R.id.widget_root, "setBackgroundResource", background);
 
-            // Daily bar starts full at local midnight and drains to empty by the next midnight.
-            v.setProgressBar(R.id.widget_day_progress, 1000, dayProgress, false);
-            v.setProgressBar(R.id.widget_day_progress_track, 1000, 1000, false);
-            v.setProgressBar(R.id.widget_progress_green, 1000, progress, false);
-            v.setProgressBar(R.id.widget_progress_orange, 1000, progress, false);
-            v.setProgressBar(R.id.widget_progress_yellow, 1000, progress, false);
-            v.setProgressBar(R.id.widget_progress_red, 1000, progress, false);
-            v.setViewVisibility(R.id.widget_progress_green, color == 0xFF2E7D32 ? android.view.View.VISIBLE : android.view.View.GONE);
-            v.setViewVisibility(R.id.widget_progress_orange, color == 0xFFEF6C00 ? android.view.View.VISIBLE : android.view.View.GONE);
-            v.setViewVisibility(R.id.widget_progress_yellow, color == 0xFFF9A825 ? android.view.View.VISIBLE : android.view.View.GONE);
-            v.setViewVisibility(R.id.widget_progress_red, color == 0xFFC62828 ? android.view.View.VISIBLE : android.view.View.GONE);
+            // Main mission progress and its color thresholds.
+            v.setProgressBar(R.id.widget_progress_green, 1000, mainProgress, false);
+            v.setProgressBar(R.id.widget_progress_yellow, 1000, mainProgress, false);
+            v.setProgressBar(R.id.widget_progress_orange, 1000, mainProgress, false);
+            v.setProgressBar(R.id.widget_progress_red, 1000, mainProgress, false);
+            v.setViewVisibility(R.id.widget_progress_green, mainColor == GREEN ? View.VISIBLE : View.GONE);
+            v.setViewVisibility(R.id.widget_progress_yellow, mainColor == YELLOW ? View.VISIBLE : View.GONE);
+            v.setViewVisibility(R.id.widget_progress_orange, mainColor == ORANGE ? View.VISIBLE : View.GONE);
+            v.setViewVisibility(R.id.widget_progress_red, mainColor == RED ? View.VISIBLE : View.GONE);
+
+            // Daily countdown bar also changes green -> yellow -> orange -> red as today runs out.
+            v.setProgressBar(R.id.widget_day_green, 1000, dailyProgress, false);
+            v.setProgressBar(R.id.widget_day_yellow, 1000, dailyProgress, false);
+            v.setProgressBar(R.id.widget_day_orange, 1000, dailyProgress, false);
+            v.setProgressBar(R.id.widget_day_red, 1000, dailyProgress, false);
+            v.setViewVisibility(R.id.widget_day_green, dailyColor == GREEN ? View.VISIBLE : View.GONE);
+            v.setViewVisibility(R.id.widget_day_yellow, dailyColor == YELLOW ? View.VISIBLE : View.GONE);
+            v.setViewVisibility(R.id.widget_day_orange, dailyColor == ORANGE ? View.VISIBLE : View.GONE);
+            v.setViewVisibility(R.id.widget_day_red, dailyColor == RED ? View.VISIBLE : View.GONE);
 
             Intent open = new Intent(context, MainActivity.class);
             PendingIntent pi = PendingIntent.getActivity(context, 0, open,
@@ -57,6 +82,13 @@ public class CountdownWidgetProvider extends AppWidgetProvider {
             v.setOnClickPendingIntent(R.id.widget_root, pi);
             manager.updateAppWidget(id, v);
         }
+    }
+
+    private static int progressColor(int progress) {
+        if (progress > 750) return GREEN;
+        if (progress > 500) return YELLOW;
+        if (progress > 250) return ORANGE;
+        return RED;
     }
 
     private static int dailyRemainingProgress(Instant now) {
@@ -69,7 +101,6 @@ public class CountdownWidgetProvider extends AppWidgetProvider {
         return (int) Math.max(0, Math.min(1000, Math.round(1000.0 * remaining / total)));
     }
 
-    // Four subtle palettes follow the local time without changing the widget layout.
     private static int backgroundPeriod(Instant now) {
         int hour = now.atZone(Countdown.ZONE).getHour();
         if (hour >= 5 && hour < 9) return 0;

@@ -4,8 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_vertical"
-    android:padding="13dp"
+    android:gravity="top"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:paddingTop="9dp"
+    android:paddingBottom="10dp"
     android:background="@drawable/widget_background">
 
     <TextView
@@ -14,23 +17,34 @@
         android:layout_height="wrap_content"
         android:text="Mission SM18"
         android:textColor="#000000"
-        android:textSize="14sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:maxLines="1" />
+
+    <TextView
+        android:id="@+id/widget_today"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="Friday, 16 October 2026"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="medium"
+        android:maxLines="1"
+        android:ellipsize="end" />
 
     <TextView
         android:id="@+id/widget_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="4y   11mo   30d"
+        android:layout_marginTop="3dp"
+        android:text="4y   11mo   28d"
         android:textColor="#000000"
-        android:textSize="17sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:maxLines="1"
         android:ellipsize="end" />
 
-    <!-- Time remaining in the countdown plus a compact daily progress bar. -->
     <LinearLayout
         android:id="@+id/widget_time_row"
         android:layout_width="match_parent"
@@ -41,48 +55,64 @@
 
         <TextView
             android:id="@+id/widget_time"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="23h   59m   59s"
+            android:text="06h 51m 46s"
             android:textColor="#000000"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:maxLines="1"
             android:includeFontPadding="false" />
 
         <FrameLayout
             android:layout_width="64dp"
             android:layout_height="6dp"
-            android:layout_marginStart="8dp"
-            android:contentDescription="Time remaining in today">
-            <ProgressBar
-                android:id="@+id/widget_day_progress_track"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:max="1000"
-                android:progress="1000"
-                android:progressTint="#559E9E9E"
-                android:progressBackgroundTint="#559E9E9E" />
-            <ProgressBar
-                android:id="@+id/widget_day_progress"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:max="1000"
-                android:progress="1000"
-                android:progressTint="#2E7D32"
-                android:progressBackgroundTint="#559E9E9E" />
+            android:layout_marginStart="9dp"
+            android:contentDescription="Time remaining today">
+            <ProgressBar android:id="@+id/widget_day_track" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="1000" android:progress="1000" android:progressTint="#559E9E9E" android:progressBackgroundTint="#559E9E9E" />
+            <ProgressBar android:id="@+id/widget_day_green" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="1000" android:progress="1000" android:progressTint="#2E7D32" android:progressBackgroundTint="#559E9E9E" />
+            <ProgressBar android:id="@+id/widget_day_yellow" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="1000" android:progress="1000" android:progressTint="#F9A825" android:progressBackgroundTint="#559E9E9E" android:visibility="gone" />
+            <ProgressBar android:id="@+id/widget_day_orange" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="1000" android:progress="1000" android:progressTint="#EF6C00" android:progressBackgroundTint="#559E9E9E" android:visibility="gone" />
+            <ProgressBar android:id="@+id/widget_day_red" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="1000" android:progress="1000" android:progressTint="#C62828" android:progressBackgroundTint="#559E9E9E" android:visibility="gone" />
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/widget_day_percent"
+            android:layout_width="38dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:gravity="end|center_vertical"
+            android:text="52%"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:maxLines="1" />
     </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:layout_marginTop="10dp">
-        <ProgressBar android:id="@+id/widget_progress_green" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="8dp" android:max="1000" android:progress="1000" android:progressTint="#2E7D32" android:progressBackgroundTint="#559E9E9E" />
-        <ProgressBar android:id="@+id/widget_progress_orange" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="8dp" android:max="1000" android:progress="1000" android:progressTint="#EF6C00" android:progressBackgroundTint="#559E9E9E" android:visibility="gone" />
-        <ProgressBar android:id="@+id/widget_progress_yellow" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="8dp" android:max="1000" android:progress="1000" android:progressTint="#F9A825" android:progressBackgroundTint="#559E9E9E" android:visibility="gone" />
-        <ProgressBar android:id="@+id/widget_progress_red" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="8dp" android:max="1000" android:progress="1000" android:progressTint="#C62828" android:progressBackgroundTint="#559E9E9E" android:visibility="gone" />
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:layout_weight="1">
+            <ProgressBar android:id="@+id/widget_progress_green" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="8dp" android:max="1000" android:progress="1000" android:progressTint="#2E7D32" android:progressBackgroundTint="#559E9E9E" />
+            <ProgressBar android:id="@+id/widget_progress_yellow" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="8dp" android:max="1000" android:progress="1000" android:progressTint="#F9A825" android:progressBackgroundTint="#559E9E9E" android:visibility="gone" />
+            <ProgressBar android:id="@+id/widget_progress_orange" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="8dp" android:max="1000" android:progress="1000" android:progressTint="#EF6C00" android:progressBackgroundTint="#559E9E9E" android:visibility="gone" />
+            <ProgressBar android:id="@+id/widget_progress_red" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="8dp" android:max="1000" android:progress="1000" android:progressTint="#C62828" android:progressBackgroundTint="#559E9E9E" android:visibility="gone" />
+        </FrameLayout>
+        <TextView
+            android:id="@+id/widget_main_percent"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:gravity="end|center_vertical"
+            android:text="99%"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:maxLines="1" />
+    </LinearLayout>
 </LinearLayout>

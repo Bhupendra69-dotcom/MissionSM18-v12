@@ -1,12 +1,18 @@
-Mission SM18 — Daily progress bar patch
+MISSION SM18 WIDGET REFINEMENT PATCH
 
-This patch adds a small horizontal bar to the RIGHT of the hours/minutes/seconds counter.
-The daily bar starts full at midnight India time and decreases toward empty by the next midnight.
-The existing main countdown progress bar and its color thresholds remain unchanged.
-It also includes the four day/night background assets and provider used by the previous day/night patch.
+This patch updates only the widget layout and CountdownWidgetProvider.java. It keeps the existing app/build files and day/night background assets.
 
-Apply this patch to the Android project that the workflow actually builds:
-MissionSM18-Clean-Repo-v1.2/app/
+Features:
+- Title at the top-left.
+- Current weekday/date directly below the title.
+- Existing target countdown below the date.
+- Compact daily remaining bar immediately to the right of the HH/MM/SS counter.
+- Daily bar changes green/yellow/orange/red as the day runs out.
+- Percentage labels to the right of both bars.
+- Existing mission progress and day/night background behavior retained.
 
-Copy/replace the contents of this patch's app/ folder into that project's app/ folder.
-Do not replace build.gradle, settings.gradle, gradlew, or the workflow.
+Upload into the nested project used by the successful build:
+MissionSM18-Clean-Repo-v1.2/app/src/main/java/com/missionsm18/CountdownWidgetProvider.java
+MissionSM18-Clean-Repo-v1.2/app/src/main/res/layout/countdown_widget.xml
+
+Keep all other project files unchanged. Commit to main, wait for GitHub Actions, download the new APK artifact, install, and re-add the widget.
