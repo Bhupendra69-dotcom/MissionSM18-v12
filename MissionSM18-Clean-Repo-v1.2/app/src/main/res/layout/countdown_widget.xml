@@ -81,6 +81,13 @@
             android:maxLines="1" />
     </LinearLayout>
 
+    <!-- Flexible spacer keeps the title/countdown/main bar in place while anchoring
+         the date and daily progress row near the bottom of the widget. -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:id="@+id/widget_bottom_row"
         android:layout_width="match_parent"

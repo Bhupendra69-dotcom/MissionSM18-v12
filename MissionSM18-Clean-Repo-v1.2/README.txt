@@ -1,13 +1,8 @@
-MISSION SM18 — LAYOUT ADJUSTMENT PATCH
+Mission SM18 layout fix
 
-This patch only changes the widget layout. It keeps the current title, countdown, main progress bar, day/night background, icon assets, percentage labels, and daily progress color logic.
+This patch changes only countdown_widget.xml. It inserts a flexible spacer above the bottom row so the title, countdown, time, and main progress bar remain at their existing positions while the date and daily progress bar sit near the bottom edge.
 
-Layout changes:
-- The weekday/date is moved below the main mission progress bar.
-- The daily remaining-time progress bar is placed to the right of the weekday/date and extends toward the right edge.
-- The hours/minutes/seconds row now contains only the time, leaving it less congested.
-
-Upload the included app/src/main/res/layout/countdown_widget.xml to the matching path inside the nested project that your successful build uses:
+Upload this file to the same project folder used by your successful build:
 MissionSM18-Clean-Repo-v1.2/app/src/main/res/layout/countdown_widget.xml
 
-Replace that file only. Do not replace the Java provider or other resources. Commit to main, wait for GitHub Actions, then install the APK from the successful run and re-add the widget if needed.
+Do not replace other files. Commit, wait for GitHub Actions to succeed, install the new APK, and re-add the home-screen widget if necessary.
