@@ -56,7 +56,6 @@ public class CountdownWidgetProvider extends AppWidgetProvider {
             v.setTextColor(R.id.widget_day_percent, textColor);
             v.setInt(R.id.widget_root, "setBackgroundResource", background);
 
-            // Main mission progress and its color thresholds.
             v.setProgressBar(R.id.widget_progress_green, 1000, mainProgress, false);
             v.setProgressBar(R.id.widget_progress_yellow, 1000, mainProgress, false);
             v.setProgressBar(R.id.widget_progress_orange, 1000, mainProgress, false);
@@ -66,7 +65,7 @@ public class CountdownWidgetProvider extends AppWidgetProvider {
             v.setViewVisibility(R.id.widget_progress_orange, mainColor == ORANGE ? View.VISIBLE : View.GONE);
             v.setViewVisibility(R.id.widget_progress_red, mainColor == RED ? View.VISIBLE : View.GONE);
 
-            // Daily countdown bar also changes green -> yellow -> orange -> red as today runs out.
+            v.setProgressBar(R.id.widget_day_track, 1000, 1000, false);
             v.setProgressBar(R.id.widget_day_green, 1000, dailyProgress, false);
             v.setProgressBar(R.id.widget_day_yellow, 1000, dailyProgress, false);
             v.setProgressBar(R.id.widget_day_orange, 1000, dailyProgress, false);
