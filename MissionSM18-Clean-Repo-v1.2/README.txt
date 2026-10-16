@@ -1,18 +1,13 @@
-MISSION SM18 WIDGET REFINEMENT PATCH
+MISSION SM18 — LAYOUT ADJUSTMENT PATCH
 
-This patch updates only the widget layout and CountdownWidgetProvider.java. It keeps the existing app/build files and day/night background assets.
+This patch only changes the widget layout. It keeps the current title, countdown, main progress bar, day/night background, icon assets, percentage labels, and daily progress color logic.
 
-Features:
-- Title at the top-left.
-- Current weekday/date directly below the title.
-- Existing target countdown below the date.
-- Compact daily remaining bar immediately to the right of the HH/MM/SS counter.
-- Daily bar changes green/yellow/orange/red as the day runs out.
-- Percentage labels to the right of both bars.
-- Existing mission progress and day/night background behavior retained.
+Layout changes:
+- The weekday/date is moved below the main mission progress bar.
+- The daily remaining-time progress bar is placed to the right of the weekday/date and extends toward the right edge.
+- The hours/minutes/seconds row now contains only the time, leaving it less congested.
 
-Upload into the nested project used by the successful build:
-MissionSM18-Clean-Repo-v1.2/app/src/main/java/com/missionsm18/CountdownWidgetProvider.java
+Upload the included app/src/main/res/layout/countdown_widget.xml to the matching path inside the nested project that your successful build uses:
 MissionSM18-Clean-Repo-v1.2/app/src/main/res/layout/countdown_widget.xml
 
-Keep all other project files unchanged. Commit to main, wait for GitHub Actions, download the new APK artifact, install, and re-add the widget.
+Replace that file only. Do not replace the Java provider or other resources. Commit to main, wait for GitHub Actions, then install the APK from the successful run and re-add the widget if needed.
