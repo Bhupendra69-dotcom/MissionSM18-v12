@@ -3,9 +3,11 @@ package com.missionsm18;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 
@@ -25,6 +27,7 @@ public class CountdownWidgetProvider extends AppWidgetProvider {
         int period = backgroundPeriod(now);
         int background = backgroundFor(period);
         int textColor = period == 3 ? 0xFFFFFFFF : 0xFF000000;
+        int dayProgress = dailyRemainingProgress(now);
 
         for (int id : ids) {
             RemoteViews v = new RemoteViews(context.getPackageName(), R.layout.countdown_widget);
@@ -36,6 +39,9 @@ public class CountdownWidgetProvider extends AppWidgetProvider {
             v.setTextColor(R.id.widget_time, textColor);
             v.setInt(R.id.widget_root, "setBackgroundResource", background);
 
+            // Daily bar starts full at local midnight and drains to empty by the next midnight.
+            v.setProgressBar(R.id.widget_day_progress, 1000, dayProgress, false);
+            v.setProgressBar(R.id.widget_day_progress_track, 1000, 1000, false);
             v.setProgressBar(R.id.widget_progress_green, 1000, progress, false);
             v.setProgressBar(R.id.widget_progress_orange, 1000, progress, false);
             v.setProgressBar(R.id.widget_progress_yellow, 1000, progress, false);
@@ -53,13 +59,23 @@ public class CountdownWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    // Four subtle palettes make the widget follow the local day without changing its layout.
+    private static int dailyRemainingProgress(Instant now) {
+        ZonedDateTime localNow = now.atZone(Countdown.ZONE);
+        ZonedDateTime start = localNow.toLocalDate().atStartOfDay(Countdown.ZONE);
+        ZonedDateTime nextStart = start.plusDays(1);
+        long total = Duration.between(start.toInstant(), nextStart.toInstant()).toMillis();
+        long remaining = Math.max(0L, Duration.between(now, nextStart.toInstant()).toMillis());
+        if (total <= 0L) return 0;
+        return (int) Math.max(0, Math.min(1000, Math.round(1000.0 * remaining / total)));
+    }
+
+    // Four subtle palettes follow the local time without changing the widget layout.
     private static int backgroundPeriod(Instant now) {
-        int hour = ZonedDateTime.ofInstant(now, Countdown.ZONE).getHour();
-        if (hour >= 5 && hour < 9) return 0;       // sunrise
-        if (hour >= 9 && hour < 16) return 1;      // daylight
-        if (hour >= 16 && hour < 19) return 2;     // sunset / twilight
-        return 3;                                  // night
+        int hour = now.atZone(Countdown.ZONE).getHour();
+        if (hour >= 5 && hour < 9) return 0;
+        if (hour >= 9 && hour < 16) return 1;
+        if (hour >= 16 && hour < 19) return 2;
+        return 3;
     }
 
     private static int backgroundFor(int period) {
