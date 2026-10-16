@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient android:angle="0" android:startColor="#FFFFE6DD" android:centerColor="#FFF8D8E7" android:endColor="#FFE1DFFF" android:type="linear" />
+            <corners android:radius="16dp" />
+            <stroke android:width="1dp" android:color="#FFE1C8D7" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/widget_icon_sunset" android:gravity="right|center_vertical" android:width="92dp" android:height="92dp" />
+</layer-list>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient android:angle="0" android:startColor="#FF07152E" android:centerColor="#FF10284B" android:endColor="#FF233E69" android:type="linear" />
+            <corners android:radius="16dp" />
+            <stroke android:width="1dp" android:color="#FF425A7A" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/widget_icon_moon" android:gravity="right|center_vertical" android:width="92dp" android:height="92dp" />
+</layer-list>
