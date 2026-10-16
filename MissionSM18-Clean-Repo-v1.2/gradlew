@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+# Lightweight Gradle launcher for Mission SM18.
+# Downloads the pinned Gradle distribution if it is not already cached.
+set -eu
+GRADLE_VERSION="8.9"
+GRADLE_HOME_BASE="${GRADLE_USER_HOME:-$HOME/.gradle}/mission-sm18-wrapper"
+GRADLE_HOME="$GRADLE_HOME_BASE/gradle-$GRADLE_VERSION"
+GRADLE_ZIP="$GRADLE_HOME_BASE/gradle-$GRADLE_VERSION-bin.zip"
+if [ ! -x "$GRADLE_HOME/bin/gradle" ]; then
+  mkdir -p "$GRADLE_HOME_BASE"
+  if [ ! -f "$GRADLE_ZIP" ]; then
+    if command -v curl >/dev/null 2>&1; then
+      curl -fL --retry 3 "https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip" -o "$GRADLE_ZIP"
+    else
+      echo "curl is required to download Gradle $GRADLE_VERSION" >&2
+      exit 1
+    fi
+  fi
+  rm -rf "$GRADLE_HOME"
+  mkdir -p "$GRADLE_HOME_BASE/unpack"
+  unzip -q -o "$GRADLE_ZIP" -d "$GRADLE_HOME_BASE/unpack"
+  mv "$GRADLE_HOME_BASE/unpack/gradle-$GRADLE_VERSION" "$GRADLE_HOME"
+  rmdir "$GRADLE_HOME_BASE/unpack"
+fi
+exec "$GRADLE_HOME/bin/gradle" "$@"

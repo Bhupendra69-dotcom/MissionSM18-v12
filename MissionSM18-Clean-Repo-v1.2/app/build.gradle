@@ -1,0 +1,13 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.missionsm18'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'com.missionsm18'
+        minSdk 26
+        targetSdk 35
+        versionCode 3
+        versionName '1.2'
+    }
+}
