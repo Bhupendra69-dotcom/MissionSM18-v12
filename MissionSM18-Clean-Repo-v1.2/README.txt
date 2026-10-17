@@ -1,8 +1,8 @@
-Mission SM18 layout fix
+Mission SM18 - Full App with Precise Spacing
 
-This patch changes only countdown_widget.xml. It inserts a flexible spacer above the bottom row so the title, countdown, time, and main progress bar remain at their existing positions while the date and daily progress bar sit near the bottom edge.
+This ZIP contains the complete app/ directory, with the latest countdown_widget.xml spacing changes included.
 
-Upload this file to the same project folder used by your successful build:
-MissionSM18-Clean-Repo-v1.2/app/src/main/res/layout/countdown_widget.xml
+Upload the contents of the app folder to the existing project folder:
+MissionSM18-Clean-Repo-v1.2/app
 
-Do not replace other files. Commit, wait for GitHub Actions to succeed, install the new APK, and re-add the home-screen widget if necessary.
+Preserve all subfolders. Do not create app/app. Do not replace project-level Gradle files or the GitHub Actions workflow.
