@@ -57,7 +57,7 @@
         android:id="@+id/widget_main_progress_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="22dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <FrameLayout
@@ -92,7 +92,7 @@
         android:id="@+id/widget_bottom_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <TextView
