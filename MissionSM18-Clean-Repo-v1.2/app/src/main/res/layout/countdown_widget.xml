@@ -8,7 +8,7 @@
     android:paddingStart="14dp"
     android:paddingEnd="14dp"
     android:paddingTop="9dp"
-    android:paddingBottom="0dp"
+    android:paddingBottom="9dp"
     android:background="@drawable/widget_background">
 
     <TextView
