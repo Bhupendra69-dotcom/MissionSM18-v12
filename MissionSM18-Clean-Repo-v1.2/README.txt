@@ -1,10 +1,18 @@
-Mission SM18 - Complete app folder with requested layout adjustments
+Mission SM18 — Full App Layout Correction
 
-Changes in this package are limited to app/src/main/res/layout/countdown_widget.xml:
-- Countdown years/months/days and hours/minutes/seconds block is moved slightly lower (date margin 9dp -> 18dp).
-- Main progress bar row is moved lower (top margin 22dp -> 32dp).
-- Date/day row is given more width so the year is less likely to be ellipsized; daily bar is correspondingly shorter but still displayed with its percentage.
+This archive contains the complete app/ directory from the existing Mission SM18 project.
+Only app/src/main/res/layout/countdown_widget.xml was adjusted.
 
-All Java files, countdown calculations, progress colors, day/night backgrounds, icons, manifest, and other resources are retained from the previous complete app package.
+Layout changes:
+- Countdown block shifted down to sit approximately at the vertical center of the card.
+- Main progress row moved down slightly relative to the countdown block.
+- Bottom padding removed so the date row has room to render fully.
+- Date row widened and daily progress track shortened so the year can fit.
+- Java source, countdown calculations, progress-color logic, backgrounds, icons, and other app resources remain unchanged.
 
-Upload the CONTENTS of the app folder into the existing project's app folder. Do not create app/app. Do not replace project-level Gradle files or the GitHub Actions workflow.
+Installation:
+1. Extract this ZIP.
+2. In the repository, open MissionSM18-Clean-Repo-v1.2/app.
+3. Replace the contents of that existing app folder with the contents of this archive's app folder.
+4. Do not replace project-level Gradle files or .github/workflows/build-apk.yml.
+5. Commit the files, build a new APK, and reinstall it. Remove and re-add the home-screen widget if needed.
