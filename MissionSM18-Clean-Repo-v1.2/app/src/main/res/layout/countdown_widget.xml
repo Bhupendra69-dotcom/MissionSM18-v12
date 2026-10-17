@@ -25,7 +25,7 @@
         android:id="@+id/widget_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="18dp"
         android:text="4y   11mo   28d"
         android:textColor="#FF000000"
         android:textSize="20sp"
@@ -57,7 +57,7 @@
         android:id="@+id/widget_main_progress_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="32dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <FrameLayout
@@ -99,8 +99,8 @@
             android:id="@+id/widget_today"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.15"
-            android:layout_marginEnd="10dp"
+            android:layout_weight="1.5"
+            android:layout_marginEnd="8dp"
             android:text="Friday, 16 Oct 2026"
             android:textColor="#FF000000"
             android:textSize="14sp"
@@ -110,7 +110,7 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="6dp"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:contentDescription="Time remaining today">
             <ProgressBar android:id="@+id/widget_day_track" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="1000" android:progress="1000" android:progressTint="#559E9E9E" android:progressBackgroundTint="#559E9E9E" />
             <ProgressBar android:id="@+id/widget_day_green" style="?android:attr/progressBarStyleHorizontal" android:layout_width="match_parent" android:layout_height="6dp" android:max="1000" android:progress="1000" android:progressTint="#2E7D32" android:progressBackgroundTint="#559E9E9E" />
